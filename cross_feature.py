@@ -43,7 +43,7 @@ def cross(rdd, col_a, col_b, col_label):
     rdd = rdd.map(lambda line: [int(float(line[0])), int(float(line[1])), float(line[2])])
     rdd = rdd.map(lambda line: ((line[0], line[1]), (line[2], 1.0)))
     rdd = rdd.reduceByKey(lambda val1, val2: (val1[0]+val2[0], val1[1]+val2[1]))
-    rdd = rdd.map(lambda line: (line[0][0], line[0][1], line[1][0]/line[1][1]))
+    rdd = rdd.map(lambda line: ((line[0][0], line[0][1]), line[1][0]/line[1][1]))
     return rdd
 
 #rdd2 is the  ((feat1, feat2), ecr) table
@@ -58,7 +58,7 @@ def join(rdd1, rdd2, col_a, col_b):
     return rdd1
 
 if __name__=="__main__":
-    rdd = sc.textFile('/user/bigdata_driver_ecosys_test/cgb/price_fe/bubble_basic_combinefe/2017/05/02/*')
+    rdd = sc.textFile('/user/bigdata_driver_ecosys_test/cgb/price_fe/bubble_basic_combinefe/2017/05/15/*')
     rdd2 = cross(rdd, 12, 11, 6)
     rdd1 = sc.textFile('/user/bigdata_driver_ecosys_test/cgb/price_fe/xgb_v2/2017/06/11/part-0009*')
     rdd1 = rdd1.filter(filter_line).map(line_format)
